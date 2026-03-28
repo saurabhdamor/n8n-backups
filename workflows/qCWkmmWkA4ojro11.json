@@ -1,0 +1,49 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-02-26T12:43:48.522Z",
+  "id": "qCWkmmWkA4ojro11",
+  "isArchived": false,
+  "meta": null,
+  "name": "webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dd5b356a-b4d7-4140-8b97-86bb414f4616",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        -144
+      ],
+      "id": "a1eef0c6-06da-45c2-bad3-8973a70053be",
+      "name": "Webhook",
+      "webhookId": "dd5b356a-b4d7-4140-8b97-86bb414f4616"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-26T12:43:48.522Z",
+      "createdAt": "2026-02-26T12:43:48.522Z",
+      "role": "workflow:owner",
+      "workflowId": "qCWkmmWkA4ojro11",
+      "projectId": "J64OilELXJMGpVEI"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-26T13:01:52.217Z",
+  "versionId": "e6966521-19af-4e46-bebd-90db1b24c715"
+}
