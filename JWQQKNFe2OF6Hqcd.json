@@ -1,0 +1,338 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Split Prompts": {
+      "main": [
+        [
+          {
+            "node": "Merge Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Loop Indexes": {
+      "main": [
+        [
+          {
+            "node": "Set Topic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Topic": {
+      "main": [
+        [
+          {
+            "node": "Prompt Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Batches": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Create Loop Indexes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt Generator": {
+      "main": [
+        [
+          {
+            "node": "Split Prompts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Prompt Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-26T12:45:25.626Z",
+  "id": "JWQQKNFe2OF6Hqcd",
+  "isArchived": false,
+  "meta": null,
+  "name": "Image Prompt Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "functionCode": "let prompts = [];\n\nfor (const item of items) {\n  const raw = item.json.text || \"\";\n  const lines = raw\n    .split(/\\n{2,}|\\n/)\n    .map(line => line.trim())\n    .filter(line => line.length > 0);\n\n  for (const line of lines) {\n    prompts.push({ json: { prompt: line } });\n  }\n}\n\nreturn prompts;"
+      },
+      "id": "90752bcb-a830-4117-b871-452da1e3331e",
+      "name": "Split Prompts",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        864,
+        -224
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "return Array.from({ length: 50 }, (_, i) => ({ json: { batch: i } }));"
+      },
+      "id": "148b6585-9a4f-4814-8970-210e180c5204",
+      "name": "Create Loop Indexes",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        192,
+        -224
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a48a0e7b-b0eb-4c57-840c-e59524befb67",
+      "name": "Merge Batches",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        -208
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "topic",
+              "value": "={{ $('Google Sheets1').item.json.Idea }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "395f7fe7-1db8-4797-b8d4-3291b47741d2",
+      "name": "Set Topic",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        352,
+        -224
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kcmCmbE3HvsqbpptjEgZuHlcbw6IWZpEZRvMmE9D5JI",
+          "mode": "list",
+          "cachedResultName": "Image Prompt",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kcmCmbE3HvsqbpptjEgZuHlcbw6IWZpEZRvMmE9D5JI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1927100267,
+          "mode": "list",
+          "cachedResultName": "Ideas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kcmCmbE3HvsqbpptjEgZuHlcbw6IWZpEZRvMmE9D5JI/edit#gid=1927100267"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Created",
+              "lookupValue": "NO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        16,
+        -224
+      ],
+      "id": "e3dc6436-fbc5-4c10-b11e-f8faf53c35b6",
+      "name": "Google Sheets1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kcmCmbE3HvsqbpptjEgZuHlcbw6IWZpEZRvMmE9D5JI",
+          "mode": "list",
+          "cachedResultName": "Image Prompt",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kcmCmbE3HvsqbpptjEgZuHlcbw6IWZpEZRvMmE9D5JI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 145090983,
+          "mode": "list",
+          "cachedResultName": "Generated Pmts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kcmCmbE3HvsqbpptjEgZuHlcbw6IWZpEZRvMmE9D5JI/edit#gid=145090983"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Prompt": "={{ $json.prompt }}",
+            "Images created": "NO"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Prompt",
+              "displayName": "Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Images created",
+              "displayName": "Images created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1264,
+        -208
+      ],
+      "id": "091ff317-ef31-4d75-931f-16cb1488ac66",
+      "name": "Google Sheets2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate 20 unique, highly realistic, photorealistic image prompts based on the topic: \"{{ $json.topic }}\". Each prompt should describe a specific visual scene with concrete details such as environment, lighting, perspective, colors, and objects. remove any watermark Focus on realism — use terms that an image generator can understand clearly. Return the prompts as a plain list, one per line, no numbering, no markdown, no additional commentary.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an expert prompt engineer creating vivid, detailed prompts for an image generator."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        512,
+        -224
+      ],
+      "id": "f0d4cf2b-a04e-4b2b-9e0c-73650f550304",
+      "name": "Prompt Generator"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        512,
+        -32
+      ],
+      "id": "f359e575-35f3-4fb5-9ac8-07096c8f5881",
+      "name": "OpenAI"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 4
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -176,
+        -224
+      ],
+      "id": "7d494bd7-8d17-410f-b903-1834a73edaee",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "saurabhdamor",
+    "name": "n8n-backups"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-26T12:45:25.626Z",
+      "createdAt": "2026-02-26T12:45:25.626Z",
+      "role": "workflow:owner",
+      "workflowId": "JWQQKNFe2OF6Hqcd",
+      "projectId": "J64OilELXJMGpVEI"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-26T12:45:37.525Z",
+  "versionId": "32646240-b9b1-4489-8002-bd92af9e7075"
+}
